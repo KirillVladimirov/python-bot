@@ -4,7 +4,7 @@ import logging
 
 
 app = Flask(__name__)
-app.config.from_envvar('IS_HEROKU')
+# app.config.from_envvar('IS_HEROKU')
 
 # bot = telebot.TeleBot(app.config['API_TOKEN'])
 
