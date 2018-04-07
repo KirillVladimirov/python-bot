@@ -1,37 +1,84 @@
-from flask import Flask, request, abort
+from flask import Flask
 import telebot
-import logging
+import requests
+import datetime
 import os
 
-app = Flask(__name__)
-app.config['IS_HEROKU'] = os.environ.get('IS_HEROKU', None) == 'True'
-app.config['API_TOKEN'] = os.environ.get('API_TOKEN', None)
-app.config['WEBHOOK_URL_BASE'] = os.environ.get('WEBHOOK_URL_BASE', None)
-app.config['WEBHOOK_URL_PATH'] = "/%s/".format(app.config['API_TOKEN'])
+config = []
+config['API_TOKEN'] = os.environ.get('API_TOKEN', None)
+config['WEBHOOK_URL_BASE'] = os.environ.get('WEBHOOK_URL_BASE', None)
+config['WEBHOOK_URL_PATH'] = "/%s/".format(config['API_TOKEN'])
 
-bot = telebot.TeleBot(app.config['API_TOKEN'])
+bot = telebot.TeleBot(config['API_TOKEN'])
 
-app = Flask(__name__)
-
-
-@bot.message_handler(commands=['start'])
-def start(message):
-    bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
+bot.remove_webhook()
+bot.set_webhook(url=config['WEBHOOK_URL_BASE'] + config['WEBHOOK_URL_PATH'])
 
 
-@bot.message_handler(func=lambda message: True, content_types=['text'])
-def echo_message(message):
-    bot.reply_to(message, message.text)
+class BotHandler:
+
+    def __init__(self, token):
+        self.token = token
+        self.api_url = "https://api.telegram.org/bot{}/".format(config['API_TOKEN'])
+
+    def get_updates(self, offset=None, timeout=30):
+        method = 'getUpdates'
+        params = {'timeout': timeout, 'offset': offset}
+        resp = requests.get(self.api_url + method, params)
+        result_json = resp.json()['result']
+        return result_json
+
+    def send_message(self, chat_id, text):
+        params = {'chat_id': chat_id, 'text': text}
+        method = 'sendMessage'
+        resp = requests.post(self.api_url + method, params)
+        return resp
+
+    def get_last_update(self):
+        get_result = self.get_updates()
+
+        if len(get_result) > 0:
+            last_update = get_result[-1]
+        else:
+            last_update = get_result[len(get_result)]
+
+        return last_update
 
 
-@app.route("/токен бота", methods=['POST'])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
+greet_bot = BotHandler(config['API_TOKEN'])
+greetings = ('hello', 'hi', 'greetings', 'sup')
+now = datetime.datetime.now()
 
 
-@app.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(app.config['WEBHOOK_URL_BASE'] + app.config['WEBHOOK_URL_PATH'])
-    return "!", 200
+def main():
+    new_offset = None
+    today = now.day
+    hour = now.hour
+
+    while True:
+        greet_bot.get_updates(new_offset)
+
+        last_update = greet_bot.get_last_update()
+
+        last_update_id = last_update['update_id']
+        last_chat_text = last_update['message']['text']
+        last_chat_id = last_update['message']['chat']['id']
+        last_chat_name = last_update['message']['chat']['first_name']
+
+        if last_chat_text.lower() in greetings and today == now.day and 6 <= hour < 12:
+            greet_bot.send_message(last_chat_id, 'Good Morning  {}'.format(last_chat_name))
+            today += 1
+
+        elif last_chat_text.lower() in greetings and today == now.day and 12 <= hour < 17:
+            greet_bot.send_message(last_chat_id, 'Good Afternoon {}'.format(last_chat_name))
+            today += 1
+
+        elif last_chat_text.lower() in greetings and today == now.day and 17 <= hour < 23:
+            greet_bot.send_message(last_chat_id, 'Good Evening  {}'.format(last_chat_name))
+            today += 1
+
+        new_offset = last_update_id + 1
+
+
+if __name__ == '__main__':
+    main()
