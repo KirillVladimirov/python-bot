@@ -19,7 +19,7 @@ config['WEBHOOK_PORT'] = 8443
 
 bot = telebot.TeleBot(config['API_TOKEN'])
 
-if config['WEBHOOK_URL_BASE'] != bot.getWebhookInfo()['url']:
+if config['WEBHOOK_URL_BASE'] != bot.get_webhook_info()['url']:
     bot.remove_webhook()
     time.sleep(10)
     bot.set_webhook(url=config['WEBHOOK_URL_BASE'])
@@ -48,9 +48,3 @@ async def handle(request):
 
 app = web.Application()
 app.router.add_post('/{token}/', handle)
-
-# web.run_app(
-#     app,
-#     host=config['WEBHOOK_LISTEN'],
-#     port=config['WEBHOOK_PORT'],
-# )
