@@ -1,2 +1,5 @@
 Flask
+Flask-SQLAlchemy
+sqlalchemy-migrate
 telebot
+gunicorn
