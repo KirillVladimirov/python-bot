@@ -7,11 +7,11 @@ import logging
 from aiohttp import web
 
 logger = telebot.logger
-telebot.logger.setLevel(logging.DEBUG)
+telebot.logger.setLevel(logging.INFO)
 
 config = dict()
-
-config['API_TOKEN'] = os.environ.get('API_TOKEN', None)
+config['API_TOKEN'] = '591002265:AAGEDlHfVeUtPVNLvBKFDAHQpgLccLeNb4M'
+# config['API_TOKEN'] = os.environ.get('API_TOKEN', None)
 config['WEBHOOK_URL_BASE'] = os.environ.get('WEBHOOK_URL_BASE', None)
 config['WEBHOOK_URL_PATH'] = "/%s/".format(config['API_TOKEN'])
 config['WEBHOOK_LISTEN'] = '0.0.0.0'
@@ -19,9 +19,10 @@ config['WEBHOOK_PORT'] = 8443
 
 bot = telebot.TeleBot(config['API_TOKEN'])
 
-if config['WEBHOOK_URL_BASE'] != bot.get_webhook_info()['url']:
+info = bot.get_webhook_info()
+if config['WEBHOOK_URL_BASE'] != info.url:
     bot.remove_webhook()
-    time.sleep(10)
+    time.sleep(5)
     bot.set_webhook(url=config['WEBHOOK_URL_BASE'])
 
 
