@@ -18,9 +18,11 @@ config['WEBHOOK_LISTEN'] = '0.0.0.0'
 config['WEBHOOK_PORT'] = 8443
 
 bot = telebot.TeleBot(config['API_TOKEN'])
-bot.remove_webhook()
-time.sleep(10)
-bot.set_webhook(url=config['WEBHOOK_URL_BASE'])
+
+if config['WEBHOOK_URL_BASE'] != bot.getWebhookInfo()['url']:
+    bot.remove_webhook()
+    time.sleep(10)
+    bot.set_webhook(url=config['WEBHOOK_URL_BASE'])
 
 
 @bot.message_handler(commands=['start', 'help'])
