@@ -33,5 +33,5 @@ def getMessage():
 @app.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url="https://ссылка на приложение/токен вашего бота")
+    bot.set_webhook(app.config['WEBHOOK_URL_BASE'] + app.config['WEBHOOK_URL_PATH'])
     return "!", 200
