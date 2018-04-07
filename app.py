@@ -10,8 +10,8 @@ logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
 config = dict()
-config['API_TOKEN'] = '591002265:AAGEDlHfVeUtPVNLvBKFDAHQpgLccLeNb4M'
-# config['API_TOKEN'] = os.environ.get('API_TOKEN', None)
+
+config['API_TOKEN'] = os.environ.get('API_TOKEN', None)
 config['WEBHOOK_URL_BASE'] = os.environ.get('WEBHOOK_URL_BASE', None)
 config['WEBHOOK_URL_PATH'] = "/%s/".format(config['API_TOKEN'])
 config['WEBHOOK_LISTEN'] = '0.0.0.0'
