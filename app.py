@@ -1,21 +1,20 @@
 from flask import Flask, request, abort
 import telebot
 import logging
-
+import os
 
 app = Flask(__name__)
-# app.config.from_envvar('IS_HEROKU')
-
+app.config['IS_HEROKU'] = os.environ.get('IS_HEROKU', None)
 # bot = telebot.TeleBot(app.config['API_TOKEN'])
 
 
 @app.route('/')
 def hello_world():
-    # if app.config['IS_HEROKU']:
-    #     return 'Hello, Heroku!'
-    # else:
-    #     return 'Hello, World!'
-    return 'Hello, World!'
+    if app.config['IS_HEROKU']:
+        return 'Hello, Heroku!'
+    else:
+        return 'Hello, World!'
+
 
 # Quick'n'dirty SSL certificate generation:
 #
