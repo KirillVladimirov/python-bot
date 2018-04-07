@@ -57,3 +57,5 @@ async def root_handler(request):
 app = web.Application()
 app.router.add_post('/', root_handler)
 app.router.add_post('/{token}/', handle)
+
+web.run_app(app, host='127.0.0.1', port=8080)
