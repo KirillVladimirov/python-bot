@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import telebot
+import time
 import os
 import logging
 from aiohttp import web
@@ -18,6 +19,7 @@ config['WEBHOOK_PORT'] = 8443
 
 bot = telebot.TeleBot(config['API_TOKEN'])
 bot.remove_webhook()
+time.sleep(1)
 bot.set_webhook(url=config['WEBHOOK_URL_BASE'])
 
 
