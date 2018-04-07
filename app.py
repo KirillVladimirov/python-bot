@@ -58,4 +58,4 @@ app = web.Application()
 app.router.add_post('/', root_handler)
 app.router.add_post('/{token}/', handle)
 
-web.run_app(app, host='127.0.0.1', port=8080)
+web.run_app(app, host=config['WEBHOOK_LISTEN'], port=config['WEBHOOK_PORT'])
