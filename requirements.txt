@@ -2,4 +2,6 @@ Flask
 Flask-SQLAlchemy
 sqlalchemy-migrate
 telebot
+
+# requirements for Heroku
 gunicorn
