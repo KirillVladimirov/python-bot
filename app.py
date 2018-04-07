@@ -4,14 +4,14 @@ import logging
 import os
 
 app = Flask(__name__)
-app.config['IS_HEROKU'] = os.environ.get('IS_HEROKU', None)
+app.config['IS_HEROKU'] = os.environ.get('IS_HEROKU', None) == 'True'
 # bot = telebot.TeleBot(app.config['API_TOKEN'])
 
 
 @app.route('/')
 def hello_world():
-    if bool(app.config['IS_HEROKU']):
-        return 'Hello, Heroku! ' + str(app.config['IS_HEROKU'])
+    if app.config['IS_HEROKU']:
+        return 'Hello, Heroku! '
     else:
         return 'Hello, World!'
 
