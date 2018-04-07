@@ -47,10 +47,5 @@ async def handle(request):
         return web.Response(status=403)
 
 
-async def root_handler(request):
-    return web.Response(status=200)
-
-
 app = web.Application()
-app.router.add_post('/', root_handler)
 app.router.add_post('/{token}/', handle)
