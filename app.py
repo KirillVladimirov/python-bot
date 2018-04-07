@@ -11,11 +11,11 @@ app.config.from_envvar('IS_HEROKU')
 
 @app.route('/')
 def hello_world():
-    if app.config['IS_HEROKU']:
-        return 'Hello, Heroku!'
-    else:
-        return 'Hello, World!'
-
+    # if app.config['IS_HEROKU']:
+    #     return 'Hello, Heroku!'
+    # else:
+    #     return 'Hello, World!'
+    return 'Hello, World!'
 
 # Quick'n'dirty SSL certificate generation:
 #
