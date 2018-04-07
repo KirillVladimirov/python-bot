@@ -10,7 +10,7 @@ app.config['IS_HEROKU'] = os.environ.get('IS_HEROKU', None)
 
 @app.route('/')
 def hello_world():
-    if app.config['IS_HEROKU'] == 1:
+    if bool(app.config['IS_HEROKU']):
         return 'Hello, Heroku!'
     else:
         return 'Hello, World!'
