@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask
 import telebot
-import requests
-import datetime
 import os
 import logging
 from aiohttp import web
