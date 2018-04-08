@@ -47,15 +47,15 @@ async def handle(request):
         return web.Response(status=403)
 
 
-async def root_handler(request):
-    request_body_dict = await request.json()
-    print('root_handler')
-    print(request_body_dict)
-    return web.Response(status=200)
+# async def root_handler(request):
+#     request_body_dict = await request.json()
+#     print('root_handler')
+#     print(request_body_dict)
+#     return web.Response(status=200)
 
 
 app = web.Application()
-app.router.add_post('/', root_handler)
+# app.router.add_post('/', root_handler)
 app.router.add_post('/{token}/', handle)
 
-web.run_app(app, host=config['WEBHOOK_LISTEN'], port=config['WEBHOOK_PORT'])
+# web.run_app(app, host=config['WEBHOOK_LISTEN'], port=config['WEBHOOK_PORT'])
